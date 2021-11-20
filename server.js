@@ -55,11 +55,12 @@ app.use(express.json()); // parse json bodies
 ///////////////////////////////
 // ROUTES
 ////////////////////////////////
-// create a test route
+// create a home route
 app.get("/", (req, res) => {
   res.send("hello amiibos");
 });
 
+// ROUTES FOR RETRIEVING AMIIBOS
 // AMIIBOS INDEX ROUTE
 app.get("/amiibos", async (req, res) => {
   try {
@@ -106,12 +107,16 @@ app.delete("/amiibos/:id", async (req, res) => {
     }
 });
 
-// route for retrieving about info
-app.get("/about", (req, res) => {
-    // send about info via JSON
-    res.json(about);
+// route for retrieving my collection info
+app.get("/mycollection", async (req, res) => {
+    try {
+      // send all amiibos
+      res.json(await Amiibos.find({isOwned: true}));
+    } catch (error) {
+      //send error
+      res.status(400).json(error);
+    }
 });
-
 
 ///////////////////////////////
 // LISTENER
