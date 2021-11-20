@@ -37,7 +37,10 @@ const AmiibosSchema = new mongoose.Schema({
   name: String,
   image: String,
   gameSeries: String,
-  isOwned: Boolean
+  isOwned: { 
+        type: Boolean,
+        default: false
+  }
 });
 
 const Amiibos = mongoose.model("Amiibos", AmiibosSchema);
