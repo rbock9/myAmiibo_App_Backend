@@ -106,6 +106,12 @@ app.delete("/amiibos/:id", async (req, res) => {
     }
 });
 
+// route for retrieving about info
+app.get("/about", (req, res) => {
+    // send about info via JSON
+    res.json(about);
+});
+
 
 ///////////////////////////////
 // LISTENER
