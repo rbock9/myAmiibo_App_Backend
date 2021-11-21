@@ -13,7 +13,8 @@
         "na": "2014-11-21"
       },
       "tail": "00000002",
-      "type": "Figure"
+      "type": "Figure", 
+      "owned": "true"
     },
     {
       "amiiboSeries": "Super Smash Bros.",

@@ -15,6 +15,8 @@ const mongoose = require("mongoose");
 // import middlware
 const cors = require("cors");
 const morgan = require("morgan");
+// import file for seed data
+// const smashAmiibos = require("./smashamiibos")
 
 ///////////////////////////////
 // DATABASE CONNECTION
@@ -24,6 +26,7 @@ mongoose.connect(DATABASE_URL, {
   useUnifiedTopology: true,
   useNewUrlParser: true,
 });
+
 // Connection Events
 mongoose.connection
   .on("open", () => console.log("Your are connected to mongoose"))
@@ -34,19 +37,20 @@ mongoose.connection
 // MODELS
 ////////////////////////////////
 const AmiibosSchema = new mongoose.Schema({
-  name: String,
-  image: String,
+
+  amiiboSeries: String,
+  character: String,
   gameSeries: String,
-  isOwned: { 
-        type: Boolean,
-        default: false
-  }
-});
+  image: String,
+  name: String,
+  type: String,
+
+},{timestamps: true})
 
 const Amiibos = mongoose.model("Amiibos", AmiibosSchema);
 
 ///////////////////////////////
-// MiddleWare
+// Middleware
 ////////////////////////////////
 app.use(cors()); // to prevent cors errors, open access to all origins
 app.use(morgan("dev")); // logging
@@ -60,6 +64,19 @@ app.get("/", (req, res) => {
   res.send("hello amiibos");
 });
 
+// // SEED ROUTE - THIS WILL RESET DATABASE WITH SEED DATA
+// // THIS WILL DELETE ANY OF YOUR ADDITIONAL AMIIBOS!!!!!
+// // YOU'VE BEEN WARNED!!!!!!!!!!!!!FDAFDSFFEAWFJEKLASL;FJ
+// app.get("/amiibos/seed", (req, res) => {
+//     Amiibos.deleteMany({})
+//       .then((data) => {
+//         Amiibo.create(smashAmiibos)
+//           .then((data) => {
+//             res.json(data)
+//           })
+//       })
+//   })
+  
 // ROUTES FOR RETRIEVING AMIIBOS
 // AMIIBOS INDEX ROUTE
 app.get("/amiibos", async (req, res) => {
@@ -107,16 +124,6 @@ app.delete("/amiibos/:id", async (req, res) => {
     }
 });
 
-// route for retrieving my collection info
-app.get("/mycollection", async (req, res) => {
-    try {
-      // send all amiibos
-      res.json(await Amiibos.find({isOwned: true}));
-    } catch (error) {
-      //send error
-      res.status(400).json(error);
-    }
-});
 
 ///////////////////////////////
 // LISTENER
